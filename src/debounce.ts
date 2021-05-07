@@ -15,7 +15,10 @@ export const debounce = <T extends unknown[], R>(
   let timeoutId: number;
   let callCounter = 0;
 
-  return function (this: void, ...args: T) {
+  return function (
+    this: ThisParameterType<Fn<T, R>>,
+    ...args: Parameters<Fn<T, R>>
+  ) {
     if (log) {
       console.log("fn called 🤙", ++callCounter);
     }
