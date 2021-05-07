@@ -22,14 +22,22 @@ export const debounce = <T extends unknown[], R>(
 
     clearTimeout(timeoutId);
 
-    return new Promise<R>((resolve) => {
+    return new Promise<R>((resolve, reject) => {
       timeoutId = window.setTimeout(() => {
-        const fnResult = fn.apply(this, args);
-        resolve(fnResult);
+        try {
+          const fnResult = fn.apply(this, args);
+          resolve(fnResult);
 
-        if (log) {
-          console.log("fn invoked 🚀");
-          console.log("fnResult 📦", fnResult);
+          if (log) {
+            console.log("fn invoked 🚀");
+            console.log("fnResult 📦", fnResult);
+          }
+        } catch (error) {
+          reject(error);
+
+          if (log) {
+            console.log("reject 😢", error);
+          }
         }
       }, duration);
     });
