@@ -12,7 +12,7 @@ export const debounce = <T extends unknown[], R>(
   duration: number,
   log = false
 ) => {
-  let timeoutId: number;
+  let timeoutId: number | undefined;
   let callCounter = 0;
 
   return function (
@@ -27,6 +27,8 @@ export const debounce = <T extends unknown[], R>(
 
     return new Promise<R>((resolve, reject) => {
       timeoutId = window.setTimeout(() => {
+        timeoutId = undefined;
+
         try {
           const fnResult = fn.apply(this, args);
           resolve(fnResult);
